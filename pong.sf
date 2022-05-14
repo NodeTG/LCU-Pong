@@ -1,0 +1,278 @@
+Global Character cPlayer1;
+Global Character cPlayer2;
+
+WorldLevel testArea("SF_RESIDENTIAL_0822");
+// useful coords: 34 FA 40 C3 65 D5 60 40 6C B8 66 C3
+
+Bool gameStarted(false);
+Bool gridSetup(false);
+
+Number WIDTH(35);
+Number HEIGHT(20);
+
+// Paddle 1 Initial Position
+Number paddle1_x(0);
+Number paddle1_y(2);
+
+// Paddle 2 Initial Position
+Number paddle2_x(WIDTH - 1);
+Number paddle2_y(HEIGHT - 4 - 2);
+
+// Ball Initial Position and Velocity
+Number ball_x(18);
+Number ball_y(10);
+Number ball_x_vel(1);
+Number ball_y_vel(1);
+
+// Active Studs
+Text p1_index1("");
+Text p1_index2("");
+Text p1_index3("");
+Text p1_index4("");
+
+Text p2_index1("");
+Text p2_index2("");
+Text p2_index3("");
+Text p2_index4("");
+
+Text ball_index1("");
+//Text ball_index2("");
+//Text ball_index3("");
+//Text ball_index4("");
+
+// Initial Setup - Clearing the Grid
+State Base()
+{
+	Actions
+	{
+		setupGrid();
+        goto GameReady();
+	};
+};
+
+Function setupGrid()
+{
+	Number i(0);
+
+	while ( i <= 699 )
+	{
+        Text studText("stud_");
+        studText = studText + i.ToText("int 1");
+
+        Gizmo tempStud(studText, testArea);
+        tempStud.SetVisible(false);
+        i = i + 1;
+	};
+
+	gridSetup = true;
+}
+
+// Waits for player to activate the game.
+State GameReady()
+{
+    Conditions
+	{
+		if (PlayerPressedButton("L3") && gridSetup)
+		{
+            gameStarted = true;
+            cPlayer1.SetAiOverride(true);
+            cPlayer1.LockInPlace(true, "idle");
+            UI_ShowHUD(false);
+            UI_ShowPlayerHUD(false);
+            goto GamePlay();
+		};
+	};
+};
+
+// Handles game logic and input/output
+State GamePlay()
+{
+    Actions
+    {  
+        DrawScreen();
+        wait(1.5);
+        while (gameStarted)
+        {
+            if (PlayerHeldButton("DOWN"))
+            {
+                paddle1_y = paddle1_y + 2;
+
+                if (paddle1_y + 4 >= HEIGHT)
+                {
+                    paddle1_y = HEIGHT - 4 - 1;
+                }
+
+                DrawPaddle1();
+            };
+
+            if (PlayerHeldButton("UP"))
+            {
+                paddle1_y = paddle1_y - 2;
+
+                if (paddle1_y < 0)
+                {
+                    paddle1_y = 0;
+                }
+
+                DrawPaddle1();
+            };
+
+            if (PlayerHeldButton("B"))
+            {
+                cPlayer1.SetAiOverride(false);
+                cPlayer1.LockInPlace(false, "idle"); 
+                UI_ShowHUD(true);
+                UI_ShowPlayerHUD(true);
+                gameStarted = false;
+            };
+
+            if (paddle2_y < ball_y)
+            {
+                paddle2_y = paddle2_y + 2;
+
+                if (paddle2_y + 4 >= HEIGHT)
+                {
+                    paddle2_y = HEIGHT - 4 - 1;
+                }
+
+                DrawPaddle2();
+            }
+            elseif (paddle2_y > ball_y)
+            {
+                paddle2_y = paddle2_y - 2;
+
+                if (paddle2_y < 0)
+                {
+                    paddle2_y = 0;
+                }
+
+                DrawPaddle2();
+            }
+
+            if ( ball_x + ball_x_vel >= WIDTH )
+            {
+                ball_x_vel = ball_x_vel * -1;
+                ball_x = WIDTH - 1;
+            }
+            elseif ( ball_x + ball_x_vel <= 0 )
+            {
+                ball_x_vel = ball_x_vel * -1;
+                ball_x = 0;
+            }
+            else
+            {
+                ball_x = ball_x + ball_x_vel;
+            }
+
+            if ( ball_y + ball_y_vel >= HEIGHT )
+            {
+                ball_y_vel = ball_y_vel * -1;
+                ball_y = HEIGHT - 1;
+            }
+            elseif ( ball_y + ball_y_vel <= 0 )
+            {
+                ball_y_vel = ball_y_vel * -1;
+                ball_y = 0;
+            }
+            else
+            {
+                ball_y = ball_y + ball_y_vel;
+            }
+
+            DrawBall();
+            wait(1.0 / 30.0);
+        };
+
+        goto GameReady();
+    };
+};
+
+Function DrawPaddle1()
+{
+    Text studText("stud_");
+    Text temp;
+    Number tempNum;
+    Number i(0);
+
+    Gizmo tempGiz1(p1_index1, testArea);
+    tempGiz1.SetVisible(false);
+    Gizmo tempGiz2(p1_index2, testArea);
+    tempGiz2.SetVisible(false);
+    Gizmo tempGiz3(p1_index3, testArea);
+    tempGiz3.SetVisible(false);
+    Gizmo tempGiz4(p1_index4, testArea);
+    tempGiz4.SetVisible(false);
+
+    while ( i < 4 )
+    {
+        tempNum = ((paddle1_y + i) * WIDTH) + paddle1_x;
+        temp = studText + tempNum.ToText("int 1");
+        Gizmo tempGiz(temp, testArea);
+        tempGiz.SetVisible(true);
+
+        if (i == 0) { p1_index1 = temp; }
+        elseif (i == 1) { p1_index2 = temp; }
+        elseif (i == 2) { p1_index3 = temp; }
+        elseif (i == 3) { p1_index4 = temp; };
+
+        i = i + 1;
+    };
+}
+
+Function DrawPaddle2()
+{
+    Text studText("stud_");
+    Text temp;
+    Number tempNum;
+    Number i(0);
+
+    Gizmo tempGiz5(p2_index1, testArea);
+    tempGiz5.SetVisible(false);
+    Gizmo tempGiz6(p2_index2, testArea);
+    tempGiz6.SetVisible(false);
+    Gizmo tempGiz7(p2_index3, testArea);
+    tempGiz7.SetVisible(false);
+    Gizmo tempGiz8(p2_index4, testArea);
+    tempGiz8.SetVisible(false);
+
+    while ( i < 4 )
+    {
+        tempNum = ((paddle2_y + i) * WIDTH) + paddle2_x;
+        temp = studText + tempNum.ToText("int 1");
+        Gizmo tempGiz(temp, testArea);
+        tempGiz.SetVisible(true);
+
+        if (i == 0) { p2_index1 = temp; }
+        elseif (i == 1) { p2_index2 = temp; }
+        elseif (i == 2) { p2_index3 = temp; }
+        elseif (i == 3) { p2_index4 = temp; };
+
+        i = i + 1;
+    };
+}
+
+Function DrawBall()
+{
+    Text studText("stud_");
+    Text temp;
+    Number tempNum;
+    Number i(0);
+
+    Gizmo tempGiz9(ball_index1, testArea);
+    tempGiz9.SetVisible(false);
+
+    tempNum = ((ball_y + i) * WIDTH) + ball_x;
+    temp = studText + tempNum.ToText("int 1");
+    Gizmo tempGiz(temp, testArea);
+    tempGiz.SetVisible(true);
+    ball_index1 = temp;
+}
+
+Function DrawScreen()
+{
+    DrawPaddle1();
+    DrawPaddle2();
+    DrawBall();
+}
+
+Base();
