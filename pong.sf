@@ -2,7 +2,6 @@ Global Character cPlayer1;
 Global Character cPlayer2;
 
 WorldLevel testArea("SF_RESIDENTIAL_0822");
-// useful coords: 34 FA 40 C3 65 D5 60 40 6C B8 66 C3
 
 Bool gameStarted(false);
 Bool gridSetup(false);
