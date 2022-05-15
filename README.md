@@ -2,6 +2,7 @@
 This is a mod I worked on while distracting myself from studying for exams. It is a very basic port of Pong for LEGO City Undercover (LCU) that works by using studs (coins) arranged in a grid to form a basic display, which is then controlled by a custom in-game script (.SF file) to run the Pong game logic.
 
 You can view a video example of the mod being used here: https://www.youtube.com/watch?v=tNTxwAIV-iQ
+
 You can also find an older version of the mod being demonstrated here: https://www.youtube.com/watch?v=InIPDO9WpEg (spoiler: it's bad)
 
 ## Why does the code make my eyes bleed?
