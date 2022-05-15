@@ -152,15 +152,25 @@ State GamePlay()
                 DrawPaddle2();
             }
 
-            if ( ball_x + ball_x_vel >= WIDTH )
+            if ( ball_x + ball_x_vel > WIDTH )
             {
-                ball_x_vel = ball_x_vel * -1;
-                ball_x = WIDTH - 1;
+                // Player 1 scores (paddle 2 misses)
+                ball_x = 18;
+                ball_y = 10;
+                ball_x_vel = -1; // Move ball towards the player who just scored, rather than the one that just missed
+                ball_y_vel = 1;
+                DrawBall();
+                wait(1.5);
             }
-            elseif ( ball_x + ball_x_vel <= 0 )
+            elseif ( ball_x + ball_x_vel < 0 )
             {
-                ball_x_vel = ball_x_vel * -1;
-                ball_x = 0;
+                // Player 2 scores (paddle 1 misses)
+                ball_x = 18;
+                ball_y = 10;
+                ball_x_vel = 1;
+                ball_y_vel = 1;
+                DrawBall();
+                wait(1.5);
             }
             else
             {
@@ -180,6 +190,23 @@ State GamePlay()
             else
             {
                 ball_y = ball_y + ball_y_vel;
+            }
+
+            Text ballText("stud_");
+            Number ballNum;
+            ballNum = (ball_y * WIDTH) + ball_x;
+            ballText = ballText + ballNum.ToText("int 1");
+            
+            if ( ballText == p1_index1 || ballText == p1_index2 || ballText == p1_index3 || ballText == p1_index4 ) // Hit P1 Paddle
+            {
+                ball_x_vel = ball_x_vel * -1;
+                ball_x = 1;
+            
+            }
+            elseif ( ballText == p2_index1 || ballText == p2_index2 || ballText == p2_index3 || ballText == p2_index4 ) // Hit P2 Paddle
+            {
+                ball_x_vel = ball_x_vel * -1;
+                ball_x = WIDTH - 1;
             }
 
             DrawBall();

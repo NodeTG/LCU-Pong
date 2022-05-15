@@ -25,7 +25,7 @@ I have decided to continue this project, and have started crossing off items in 
 
  - ~~Add a border so you can better judge the trajectory of the ball (currently, with no edges visible, you can't tell when the ball will bounce)~~
  - ~~Reduce flickering when moving the paddle by improving (or worsening) the drawing functions~~
- - Add proper paddle collision
+ - ~~Add proper paddle collision~~
  - Add scoring -> there is a cool unused UI function in .SF files that will work well for this.
  - Add Player 2 support, because the AI is too good.
  - Have the AI purposefully fail to hit the ball every so often, so that it isn't impossible.
