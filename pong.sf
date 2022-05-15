@@ -44,6 +44,7 @@ State Base()
 {
 	Actions
 	{
+        paddle2_y = RandomInt(0, HEIGHT - 4);
 		setupGrid();
         goto GameReady();
 	};
@@ -80,8 +81,11 @@ State GameReady()
             gameStarted = true;
             cPlayer1.SetAiOverride(true);
             cPlayer1.LockInPlace(true, "idle");
-            UI_ShowHUD(false);
-            UI_ShowPlayerHUD(false);
+
+            // UI enabled by default due to score UI - can press R3 to toggle it
+            //UI_ShowHUD(false);
+            //UI_ShowPlayerHUD(false);
+
             goto GamePlay();
 		};
 	};
@@ -90,6 +94,7 @@ State GameReady()
 // Handles game logic and input/output
 State GamePlay()
 {
+    Bool uiShown(true);
     Actions
     {  
         DrawScreen();
@@ -129,6 +134,14 @@ State GamePlay()
                 gameStarted = false;
             };
 
+            if (PlayerHeldButton("R3"))
+            {
+                uiShown = !uiShown;
+                UI_ShowHUD(uiShown);
+                UI_ShowPlayerHUD(uiShown);
+                wait(0.2);
+            };
+
             if (paddle2_y < ball_y)
             {
                 paddle2_y = paddle2_y + 2;
@@ -160,7 +173,8 @@ State GamePlay()
                 ball_x_vel = -1; // Move ball towards the player who just scored, rather than the one that just missed
                 ball_y_vel = 1;
                 DrawBall();
-                wait(1.5);
+                UI_SetMissionMessage("PONG_P1_SCORE", 3.5);
+                wait(3);
             }
             elseif ( ball_x + ball_x_vel < 0 )
             {
@@ -170,7 +184,8 @@ State GamePlay()
                 ball_x_vel = 1;
                 ball_y_vel = 1;
                 DrawBall();
-                wait(1.5);
+                UI_SetMissionMessage("PONG_P2_SCORE", 3.5);
+                wait(3);
             }
             else
             {
