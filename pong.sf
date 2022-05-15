@@ -11,6 +11,9 @@ Number pongRot(0.6630632281 / 0.00009587380104);
 Bool gameStarted(false);
 Bool gridSetup(false);
 
+Number p1_score(0);
+Number p2_score(0);
+
 Number WIDTH(35);
 Number HEIGHT(20);
 
@@ -95,9 +98,19 @@ State GameReady()
             cPlayer1.SetAiOverride(true);
             cPlayer1.LockInPlace(true, "idle");
 
+            if (cPlayer2)
+            {
+                cPlayer2.SetAiOverride(true);
+                cPlayer2.LockInPlace(true, "idle");
+            }
+
             // UI enabled by default due to score UI - can press R3 to toggle it
             //UI_ShowHUD(false);
             //UI_ShowPlayerHUD(false);
+
+            UI_SetMissionDamageBarText("PONG_UI_MSG");
+            UI_SetMissionDamageBar ( 5 + p1_score - p2_score, 10 );
+            UI_ShowMissionDamageBar(true);
 
             goto GamePlay();
 		};
@@ -139,7 +152,10 @@ State GamePlay()
     Actions
     {  
         DrawScreen();
+        UI_ShowMissionDamageBar(true);
         wait(1.5);
+        UI_ShowMissionDamageBar(false);
+        wait(1);
         while (gameStarted)
         {
             if (PlayerHeldButton("DOWN"))
@@ -170,8 +186,16 @@ State GamePlay()
             {
                 cPlayer1.SetAiOverride(false);
                 cPlayer1.LockInPlace(false, "idle"); 
+
+                if (cPlayer2)
+                {
+                    cPlayer2.SetAiOverride(false);
+                    cPlayer2.LockInPlace(false, "idle");
+                }
+
                 UI_ShowHUD(true);
                 UI_ShowPlayerHUD(true);
+                UI_ShowMissionDamageBar(false);
                 gameStarted = false;
             };
 
@@ -183,50 +207,111 @@ State GamePlay()
                 wait(0.2);
             };
 
-            if (paddle2_y < ball_y)
+            if (!cPlayer2)
             {
-                paddle2_y = paddle2_y + 2;
-
-                if (paddle2_y + 4 > HEIGHT)
+                Number random;
+                random = RandomInt(0,10);
+                if (random != 3 && random != 4 && random != 5 && random != 6 && random != 7) // make the AI stutter randomly to hinder its performance
                 {
-                    paddle2_y = HEIGHT - 4;
-                }
+                    if (paddle2_y < ball_y)
+                    {
+                        paddle2_y = paddle2_y + 2;
 
-                DrawPaddle2();
+                        if (paddle2_y + 4 > HEIGHT)
+                        {
+                            paddle2_y = HEIGHT - 4;
+                        }
+
+                        DrawPaddle2();
+                    }
+                    elseif (paddle2_y > ball_y)
+                    {
+                        paddle2_y = paddle2_y - 2;
+
+                        if (paddle2_y < 0)
+                        {
+                            paddle2_y = 0;
+                        }
+
+                        DrawPaddle2();
+                    }
+                }
             }
-            elseif (paddle2_y > ball_y)
+            else
             {
-                paddle2_y = paddle2_y - 2;
+                cPlayer2.SetAiOverride(true); // In case P2 drops in/out multiple times during a game, lock them in place every frame that they exist
+                cPlayer2.LockInPlace(true, "idle");
 
-                if (paddle2_y < 0)
+                if (PlayerHeldButton("A"))
                 {
-                    paddle2_y = 0;
-                }
+                    paddle2_y = paddle2_y + 2;
 
-                DrawPaddle2();
+                    if (paddle2_y + 4 > HEIGHT)
+                    {
+                        paddle2_y = HEIGHT - 4;
+                    }
+
+                    DrawPaddle2();
+                };
+
+                if (PlayerHeldButton("Y"))
+                {
+                    paddle2_y = paddle2_y - 2;
+
+                    if (paddle2_y < 0)
+                    {
+                        paddle2_y = 0;
+                    }
+
+                    DrawPaddle2();
+                };
             }
 
             if ( ball_x + ball_x_vel > WIDTH )
             {
                 // Player 1 scores (paddle 2 misses)
+
                 ball_x = 18;
                 ball_y = 10;
                 ball_x_vel = -1; // Move ball towards the player who just scored, rather than the one that just missed
                 ball_y_vel = 1;
+
                 DrawBall();
+
                 UI_SetMissionMessage("PONG_P1_SCORE", 3.5);
+                p1_score = p1_score + 1;
+
+                UI_SetMissionDamageBar ( 5 + p1_score - p2_score, 10 );
+                UI_ShowMissionDamageBar(true);
+
                 wait(3);
+                UI_ShowMissionDamageBar(false);
+                wait(1);
+
+                if (5 + p1_score - p2_score >= 10) { UI_SetMissionMessage("PONG_P1_WIN", 5); wait(6); p1_score = 0; p2_score = 0; };
             }
             elseif ( ball_x + ball_x_vel < 0 )
             {
                 // Player 2 scores (paddle 1 misses)
+
                 ball_x = 18;
                 ball_y = 10;
                 ball_x_vel = 1;
                 ball_y_vel = 1;
+
                 DrawBall();
+
                 UI_SetMissionMessage("PONG_P2_SCORE", 3.5);
+                p2_score = p2_score + 1;
+
+                UI_SetMissionDamageBar ( 5 + p1_score - p2_score, 10 );
+                UI_ShowMissionDamageBar(true);
+
                 wait(3);
+                UI_ShowMissionDamageBar(false);
+                wait(1);
+
+                if (5 + p1_score - p2_score <= 0) { UI_SetMissionMessage("PONG_P2_WIN", 5); wait(6); p1_score = 0; p2_score = 0; };
             }
             else
             {
