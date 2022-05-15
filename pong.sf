@@ -23,7 +23,7 @@ Number paddle1_y(2);
 
 // Paddle 2 Initial Position
 Number paddle2_x(WIDTH - 1);
-Number paddle2_y(HEIGHT - 4 - 2);
+Number paddle2_y(15);
 
 // Ball Initial Position and Velocity
 Number ball_x(18);
@@ -52,7 +52,6 @@ State Base()
 {
 	Actions
 	{
-        paddle2_y = RandomInt(0, HEIGHT - 4);
         testArea.ForceLoad(true);
 		setupGrid();
         goto GameReady();
@@ -267,7 +266,7 @@ State GamePlay()
                 };
             }
 
-            if ( ball_x + ball_x_vel > WIDTH )
+            if ( ball_x + ball_x_vel > WIDTH && ball_x != paddle2_x && ball_x != paddle2_x + 1)
             {
                 // Player 1 scores (paddle 2 misses)
 
@@ -283,12 +282,13 @@ State GamePlay()
 
                 UI_SetMissionDamageBar ( 5 + p1_score - p2_score, 10 );
                 UI_ShowMissionDamageBar(true);
+                PlaySFX(sfx="UI_CodeBreak_CheatUnlocked");
 
                 wait(3);
                 UI_ShowMissionDamageBar(false);
                 wait(1);
 
-                if (5 + p1_score - p2_score >= 10) { UI_SetMissionMessage("PONG_P1_WIN", 5); wait(6); p1_score = 0; p2_score = 0; };
+                if (5 + p1_score - p2_score >= 10) { UI_SetMissionMessage("PONG_P1_WIN", 5); PlaySFX("Trial_Start_01"); wait(6); p1_score = 0; p2_score = 0; };
             }
             elseif ( ball_x + ball_x_vel < 0 )
             {
@@ -306,12 +306,13 @@ State GamePlay()
 
                 UI_SetMissionDamageBar ( 5 + p1_score - p2_score, 10 );
                 UI_ShowMissionDamageBar(true);
+                PlaySFX(sfx="UI_CodeBreak_CheatUnlocked");
 
                 wait(3);
                 UI_ShowMissionDamageBar(false);
                 wait(1);
 
-                if (5 + p1_score - p2_score <= 0) { UI_SetMissionMessage("PONG_P2_WIN", 5); wait(6); p1_score = 0; p2_score = 0; };
+                if (5 + p1_score - p2_score <= 0) { UI_SetMissionMessage("PONG_P2_WIN", 5); PlaySFX("Trial_Start_01"); wait(6); p1_score = 0; p2_score = 0; };
             }
             else
             {
@@ -342,12 +343,14 @@ State GamePlay()
             {
                 ball_x_vel = ball_x_vel * -1;
                 ball_x = 1;
+                PlaySFX(sfx="UI_CodeBreak_LetterDown");
             
             }
             elseif ( ballText == p2_index1 || ballText == p2_index2 || ballText == p2_index3 || ballText == p2_index4 ) // Hit P2 Paddle
             {
                 ball_x_vel = ball_x_vel * -1;
                 ball_x = WIDTH - 1;
+                PlaySFX(sfx="UI_CodeBreak_LetterUp");
             }
 
             DrawBall();
