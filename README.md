@@ -21,9 +21,9 @@ Also, you'll note the pygame version of Pong that I have included alongside the 
  9. Once you're bored, press B to pause the game and regain control of your player. You can press L3 again at any time to continue the game (note that this will work anywhere in Lego City, so try not to press it by accident while on the other side of the map).
 
 ## Future Plans
-I have decided to continue this project, and have started crossing off items in this list:
+I have decided to continue this project, and have started crossing off items in this list as I complete them:
 
- - ~~Add a border so you can better judge the trajectory of the ball (currently, with no edges visible, you can't tell when the ball will bounce).~~
+ - ~~Add a border so you can better judge the trajectory of the ball (currently, with no edges visible, you can't tell when the ball will bounce)~~
  - Add proper paddle collision
  - Add scoring -> there is a cool unused UI function in .SF files that will work well for this.
  - Add sound effects
