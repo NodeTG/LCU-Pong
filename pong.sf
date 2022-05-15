@@ -3,8 +3,8 @@ Global Character cPlayer2;
 
 WorldLevel testArea("SF_RESIDENTIAL_0822");
 
-Position policeStation(-180.4138031, 3.560653925, -221.7855225);
-Position pongBoard(94.58107758, 16.83602333, 299.4021301);
+Position policeStation(-180.4138031, 4.560653925, -221.7855225);
+Position pongBoard(94.58107758, 17.83602333, 299.4021301);
 Number policeRot(1.562838793 / 0.00009587380104);
 Number pongRot(0.6630632281 / 0.00009587380104);
 
@@ -82,9 +82,14 @@ Function setupGrid()
 // Waits for player to activate the game.
 State GameReady()
 {
+    Number distance1;
+    Number distance2;
     Conditions
 	{
-		if (PlayerPressedButton("L3") && gridSetup)
+        distance1 = cPlayer1.DistanceToXZ(pongBoard);
+        distance2 = cPlayer1.DistanceToXZ(policeStation);
+
+		if ( PlayerPressedButton("L3") && distance1 < 7.5 )
 		{
             gameStarted = true;
             cPlayer1.SetAiOverride(true);
@@ -97,9 +102,32 @@ State GameReady()
             goto GamePlay();
 		};
 
-        if (PlayerPressedButton("R3"))
+        if ( PlayerPressedButton("R3") && distance1 < 7.5 )
         {
+            cPlayer1.SetAiOverride(true);
+            cPlayer1.LockInPlace(true, "idle");
+            FadeScreen(true);
+            wait(1.5);
+            cPlayer1.Teleport(policeStation, policeRot);
+            wait(1.0);
+            FadeScreen(false);
+            SnapCameraToDir(1, "Rear");
+            cPlayer1.SetAiOverride(false);
+            cPlayer1.LockInPlace(false, "idle");
+        };
+
+        if ( PlayerPressedButton("L3") && distance2 < 7.5 )
+        {
+            cPlayer1.SetAiOverride(true);
+            cPlayer1.LockInPlace(true, "idle");
+            FadeScreen(true);
+            wait(1.5);
             cPlayer1.Teleport(pongBoard, pongRot);
+            wait(1.0);
+            FadeScreen(false);
+            SnapCameraToDir(1, "Front");
+            cPlayer1.SetAiOverride(false);
+            cPlayer1.LockInPlace(false, "idle");
         };
 	};
 };
