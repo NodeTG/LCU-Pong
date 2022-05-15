@@ -24,7 +24,7 @@ Also, you'll note the pygame version of Pong that I have included alongside the 
 I have decided to continue this project, and have started crossing off items in this list as I complete them:
 
  - ~~Add a border so you can better judge the trajectory of the ball (currently, with no edges visible, you can't tell when the ball will bounce)~~
-  - Reduce flickering when moving the paddle by improving (or worsening) the drawing functions.
+ - ~~Reduce flickering when moving the paddle by improving (or worsening) the drawing functions~~
  - Add proper paddle collision
  - Add scoring -> there is a cool unused UI function in .SF files that will work well for this.
  - Add Player 2 support, because the AI is too good.

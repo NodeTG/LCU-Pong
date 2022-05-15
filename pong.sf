@@ -102,7 +102,7 @@ State GamePlay()
 
                 if (paddle1_y + 4 > HEIGHT)
                 {
-                    paddle1_y = HEIGHT - 4 - 1;
+                    paddle1_y = HEIGHT - 4;
                 }
 
                 DrawPaddle1();
@@ -135,7 +135,7 @@ State GamePlay()
 
                 if (paddle2_y + 4 > HEIGHT)
                 {
-                    paddle2_y = HEIGHT - 4 - 1;
+                    paddle2_y = HEIGHT - 4;
                 }
 
                 DrawPaddle2();
@@ -193,8 +193,14 @@ State GamePlay()
 Function DrawPaddle1()
 {
     Text studText("stud_");
-    Text temp;
-    Number tempNum;
+    Text temp1;
+    Number tempNum1;
+    Text temp2;
+    Number tempNum2;
+    Text temp3;
+    Number tempNum3;
+    Text temp4;
+    Number tempNum4;
     Number i(0);
 
     Gizmo tempGiz1(p1_index1, testArea);
@@ -206,52 +212,90 @@ Function DrawPaddle1()
     Gizmo tempGiz4(p1_index4, testArea);
     tempGiz4.SetVisible(false);
 
-    while ( i < 4 )
-    {
-        tempNum = ((paddle1_y + i) * WIDTH) + paddle1_x;
-        temp = studText + tempNum.ToText("int 1");
-        Gizmo tempGiz(temp, testArea);
-        tempGiz.SetVisible(true);
+    tempNum1 = ((paddle1_y + i) * WIDTH) + paddle1_x;
+    temp1 = studText + tempNum1.ToText("int 1");
+    Gizmo tempGiz1(temp1, testArea);
+    tempGiz1.SetVisible(true);
 
-        if (i == 0) { p1_index1 = temp; }
-        elseif (i == 1) { p1_index2 = temp; }
-        elseif (i == 2) { p1_index3 = temp; }
-        elseif (i == 3) { p1_index4 = temp; };
+    i = i + 1;
 
-        i = i + 1;
-    };
+    tempNum2 = ((paddle1_y + i) * WIDTH) + paddle1_x;
+    temp2 = studText + tempNum2.ToText("int 1");
+    Gizmo tempGiz2(temp2, testArea);
+    tempGiz2.SetVisible(true);
+
+    i = i + 1;
+
+    tempNum3 = ((paddle1_y + i) * WIDTH) + paddle1_x;
+    temp3 = studText + tempNum3.ToText("int 1");
+    Gizmo tempGiz3(temp3, testArea);
+    tempGiz3.SetVisible(true);
+
+    i = i + 1;
+
+    tempNum4 = ((paddle1_y + i) * WIDTH) + paddle1_x;
+    temp4 = studText + tempNum4.ToText("int 1");
+    Gizmo tempGiz4(temp4, testArea);
+    tempGiz4.SetVisible(true);
+
+    p1_index1 = temp1;
+    p1_index2 = temp2;
+    p1_index3 = temp3;
+    p1_index4 = temp4;
 }
 
 Function DrawPaddle2()
 {
     Text studText("stud_");
-    Text temp;
-    Number tempNum;
+    Text temp1;
+    Number tempNum1;
+    Text temp2;
+    Number tempNum2;
+    Text temp3;
+    Number tempNum3;
+    Text temp4;
+    Number tempNum4;
     Number i(0);
 
-    Gizmo tempGiz5(p2_index1, testArea);
-    tempGiz5.SetVisible(false);
-    Gizmo tempGiz6(p2_index2, testArea);
-    tempGiz6.SetVisible(false);
-    Gizmo tempGiz7(p2_index3, testArea);
-    tempGiz7.SetVisible(false);
-    Gizmo tempGiz8(p2_index4, testArea);
-    tempGiz8.SetVisible(false);
+    Gizmo tempGiz1(p2_index1, testArea);
+    tempGiz1.SetVisible(false);
+    Gizmo tempGiz2(p2_index2, testArea);
+    tempGiz2.SetVisible(false);
+    Gizmo tempGiz3(p2_index3, testArea);
+    tempGiz3.SetVisible(false);
+    Gizmo tempGiz4(p2_index4, testArea);
+    tempGiz4.SetVisible(false);
 
-    while ( i < 4 )
-    {
-        tempNum = ((paddle2_y + i) * WIDTH) + paddle2_x;
-        temp = studText + tempNum.ToText("int 1");
-        Gizmo tempGiz(temp, testArea);
-        tempGiz.SetVisible(true);
+    tempNum1 = ((paddle2_y + i) * WIDTH) + paddle2_x;
+    temp1 = studText + tempNum1.ToText("int 1");
+    Gizmo tempGiz1(temp1, testArea);
+    tempGiz1.SetVisible(true);
 
-        if (i == 0) { p2_index1 = temp; }
-        elseif (i == 1) { p2_index2 = temp; }
-        elseif (i == 2) { p2_index3 = temp; }
-        elseif (i == 3) { p2_index4 = temp; };
+    i = i + 1;
 
-        i = i + 1;
-    };
+    tempNum2 = ((paddle2_y + i) * WIDTH) + paddle2_x;
+    temp2 = studText + tempNum2.ToText("int 1");
+    Gizmo tempGiz2(temp2, testArea);
+    tempGiz2.SetVisible(true);
+
+    i = i + 1;
+
+    tempNum3 = ((paddle2_y + i) * WIDTH) + paddle2_x;
+    temp3 = studText + tempNum3.ToText("int 1");
+    Gizmo tempGiz3(temp3, testArea);
+    tempGiz3.SetVisible(true);
+
+    i = i + 1;
+
+    tempNum4 = ((paddle2_y + i) * WIDTH) + paddle2_x;
+    temp4 = studText + tempNum4.ToText("int 1");
+    Gizmo tempGiz4(temp4, testArea);
+    tempGiz4.SetVisible(true);
+
+    p2_index1 = temp1;
+    p2_index2 = temp2;
+    p2_index3 = temp3;
+    p2_index4 = temp4;
 }
 
 Function DrawBall()
