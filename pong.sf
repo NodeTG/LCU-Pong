@@ -23,7 +23,7 @@ Number paddle1_y(2);
 
 // Paddle 2 Initial Position
 Number paddle2_x(WIDTH - 1);
-Number paddle2_y(15);
+Number paddle2_y(14);
 
 // Ball Initial Position and Velocity
 Number ball_x(18);
@@ -210,9 +210,9 @@ State GamePlay()
             {
                 Number random;
                 random = RandomInt(0,10);
-                if (random != 3 && random != 4 && random != 5 && random != 6 && random != 7) // make the AI stutter randomly to hinder its performance
+                if ( random != 4 && random != 5 && random != 6 && random != 7 ) // make the AI stutter randomly to hinder its performance
                 {
-                    if (paddle2_y < ball_y)
+                    if (paddle2_y + 1 < ball_y)
                     {
                         paddle2_y = paddle2_y + 2;
 
@@ -223,7 +223,7 @@ State GamePlay()
 
                         DrawPaddle2();
                     }
-                    elseif (paddle2_y > ball_y)
+                    elseif (paddle2_y + 2 > ball_y)
                     {
                         paddle2_y = paddle2_y - 2;
 
@@ -266,7 +266,7 @@ State GamePlay()
                 };
             }
 
-            if ( ball_x + ball_x_vel > WIDTH && ball_x != paddle2_x && ball_x != paddle2_x + 1)
+            if ( ball_x + ball_x_vel >= WIDTH ) //&& ball_x != paddle2_x && ball_x != paddle2_x + 1)
             {
                 // Player 1 scores (paddle 2 misses)
 
