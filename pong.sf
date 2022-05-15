@@ -56,10 +56,14 @@ Function setupGrid()
 	while ( i <= 699 )
 	{
         Text studText("stud_");
+        Text studText2("stud2_");
         studText = studText + i.ToText("int 1");
+        studText2 = studText2 + i.ToText("int 1");
 
         Gizmo tempStud(studText, testArea);
         tempStud.SetVisible(false);
+        Gizmo tempStud2(studText2, testArea);
+        tempStud2.SetVisible(false);
         i = i + 1;
 	};
 
@@ -96,7 +100,7 @@ State GamePlay()
             {
                 paddle1_y = paddle1_y + 2;
 
-                if (paddle1_y + 4 >= HEIGHT)
+                if (paddle1_y + 4 > HEIGHT)
                 {
                     paddle1_y = HEIGHT - 4 - 1;
                 }
@@ -129,7 +133,7 @@ State GamePlay()
             {
                 paddle2_y = paddle2_y + 2;
 
-                if (paddle2_y + 4 >= HEIGHT)
+                if (paddle2_y + 4 > HEIGHT)
                 {
                     paddle2_y = HEIGHT - 4 - 1;
                 }
@@ -252,7 +256,7 @@ Function DrawPaddle2()
 
 Function DrawBall()
 {
-    Text studText("stud_");
+    Text studText("stud2_");
     Text temp;
     Number tempNum;
     Number i(0);
