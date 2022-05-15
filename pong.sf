@@ -3,6 +3,11 @@ Global Character cPlayer2;
 
 WorldLevel testArea("SF_RESIDENTIAL_0822");
 
+Position policeStation(-180.4138031, 3.560653925, -221.7855225);
+Position pongBoard(94.58107758, 16.83602333, 299.4021301);
+Number policeRot(1.562838793 / 0.00009587380104);
+Number pongRot(0.6630632281 / 0.00009587380104);
+
 Bool gameStarted(false);
 Bool gridSetup(false);
 
@@ -45,6 +50,7 @@ State Base()
 	Actions
 	{
         paddle2_y = RandomInt(0, HEIGHT - 4);
+        testArea.ForceLoad(true);
 		setupGrid();
         goto GameReady();
 	};
@@ -60,6 +66,8 @@ Function setupGrid()
         Text studText2("stud2_");
         studText = studText + i.ToText("int 1");
         studText2 = studText2 + i.ToText("int 1");
+        
+        if ( PlayerHeldButton("L3") ) { UI_SetMissionMessage("PONG_NOT_READY", 4); };
 
         Gizmo tempStud(studText, testArea);
         tempStud.SetVisible(false);
@@ -88,6 +96,11 @@ State GameReady()
 
             goto GamePlay();
 		};
+
+        if (PlayerPressedButton("R3"))
+        {
+            cPlayer1.Teleport(pongBoard, pongRot);
+        };
 	};
 };
 
